@@ -1,0 +1,28 @@
+import requests
+from bs4 import BeautifulSoup
+
+# specify the url of the website to scrape
+url = 'https://www.sitytrail.com/fr/'
+
+# send a GET request to the website
+response = requests.get(url)
+
+# parse the html content of the website using Beautiful Soup
+soup = BeautifulSoup(response.content, 'html.parser')
+# find all meta tags in the html content
+meta_tags = soup.find_all('meta')
+
+# create an empty list to store the metadata
+metadata_list = []
+
+# loop through each meta tag and store its content in the metadata list
+for meta_tag in meta_tags:
+    # check if the meta tag has a 'name' attribute
+    if meta_tag.has_attr('name'):
+        metadata_list.append((meta_tag['name'], meta_tag.get('content')))
+    # check if the meta tag has a 'property' attribute
+    elif meta_tag.has_attr('property'):
+        metadata_list.append((meta_tag['property'], meta_tag.get('content')))
+
+# print the metadata list
+print(metadata_list)
