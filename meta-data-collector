@@ -1,5 +1,6 @@
-import requests
+import requests, re
 from bs4 import BeautifulSoup
+
 
 # specify the url of the website to scrape
 url = 'https://www.sitytrail.com/fr/'
@@ -21,8 +22,23 @@ for meta_tag in meta_tags:
     if meta_tag.has_attr('name'):
         metadata_list.append((meta_tag['name'], meta_tag.get('content')))
     # check if the meta tag has a 'property' attribute
-    elif meta_tag.has_attr('property'):
-        metadata_list.append((meta_tag['property'], meta_tag.get('content')))
+    #if meta_tag.has_attr('twitter*'):
+     #   metadata_list.append((meta_tag['property'], meta_tag.get('content')))
 
 # print the metadata list
-print(metadata_list)
+
+x = []
+
+
+for j in range(len(metadata_list)):
+    x = str(metadata_list[j]).split(", ")
+    print(x)
+    for i in range(0,len(x),2):
+        x[i] = re.sub(r"[\'()]", "", x[i])
+        if len(x) > 1:
+            print("-----")
+            print("Clef ",x[i])
+            print("Valeur ",x[i+1])
+        else:
+            print("out of bound")
+
